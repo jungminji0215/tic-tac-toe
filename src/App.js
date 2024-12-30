@@ -2,16 +2,33 @@ import { use, useState } from "react";
 
 export default function Board() {
   console.log("========== Board 렌더링 ==========");
+  const [xIsNext, setXIsNext] = useState(true); // 플레이어 결정하기 위한 불리언 값
   const [squares, setSquares] = useState(Array(9).fill(null));
 
   function handleClick(i) {
-    const nextSquares = squares.slice();
+    // 사각형이 이미 채워져 있으면 조기 return
+    if (squares[i]) {
+      return;
+    }
+
+    const nextSquares = squares.slice(); // squares 배열의 사본 생성(불변성을 위해서)
     console.log("nextSquares :>> ", nextSquares);
 
-    nextSquares[i] = "X";
+    if (xIsNext) {
+      nextSquares[i] = "X";
+    } else {
+      nextSquares[i] = "O";
+    }
+
     setSquares(nextSquares);
+    setXIsNext(!xIsNext);
   }
 
+  /**
+   * 참고
+   * 리액트에서는 주로 이벤트를 나타내는 prop 에는 onSomething 과 같은 이름을 사용하고
+   * 이벤트를 처리하는 함수를 정의 할 때는 handleSomething 과 같은 이름을 사용한다.
+   */
   return (
     <>
       <div className="board-row">
